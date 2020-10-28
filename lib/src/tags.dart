@@ -76,7 +76,7 @@ class Tags extends StatefulWidget {
   final ItemBuilder itemBuilder;
 
   /// custom TextField
-  final TagsTextField textField;
+  final Widget textField;
 
   @override
   TagsState createState() => TagsState();
@@ -157,26 +157,7 @@ class TagsState extends State<Tags> {
 
     final Widget textField = widget.textField != null
         ? Container(
-            alignment: Alignment.center,
-            width: widget.symmetry ? _widthCalc() : widget.textField.width,
-            padding: widget.textField.padding,
-            child: SuggestionsTextField(
-              tagsTextField: widget.textField,
-              onSubmitted: (String str) {
-                if (!widget.textField.duplicates) {
-                  final List<DataList> lst =
-                      _list.where((l) => l.title == str).toList();
-
-                  if (lst.isNotEmpty) {
-                    lst.forEach((d) => d.showDuplicate = true);
-                    return;
-                  }
-                }
-
-                if (widget.textField.onSubmitted != null)
-                  widget.textField.onSubmitted(str);
-              },
-            ),
+            child: widget.textField,
           )
         : null;
 
