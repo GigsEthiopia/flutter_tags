@@ -23,7 +23,7 @@ class Tags extends StatefulWidget {
       this.textDirection = TextDirection.ltr,
       this.itemBuilder,
       this.textField,
-      Key key})
+      Key? key})
       : assert(itemCount >= 0),
         assert(alignment != null),
         assert(runAlignment != null),
@@ -33,7 +33,7 @@ class Tags extends StatefulWidget {
         super(key: key);
 
   ///specific number of columns
-  final int columns;
+  final int? columns;
 
   ///numer of item List
   final int itemCount;
@@ -73,10 +73,10 @@ class Tags extends StatefulWidget {
   /// Creates a list with [length] positions and fills it with values created by
   /// calling [generator] for each index in the range `0` .. `length - 1`
   /// in increasing order.
-  final ItemBuilder itemBuilder;
+  final ItemBuilder? itemBuilder;
 
   /// custom TextField
-  final Widget textField;
+  final Widget? textField;
 
   @override
   TagsState createState() => TagsState();
@@ -87,7 +87,7 @@ class TagsState extends State<Tags> {
   Orientation _orientation = Orientation.portrait;
   double _width = 0;
 
-  final List<DataList> _list = List();
+  final List<DataList> _list = [];
 
   List<Item> get getAllItem => _list.toList();
 
@@ -96,7 +96,7 @@ class TagsState extends State<Tags> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final keyContext = _containerKey.currentContext;
       if (keyContext != null) {
-        final RenderBox box = keyContext.findRenderObject();
+        final RenderBox box = keyContext.findRenderObject() as RenderBox;
         final size = box.size;
         setState(() {
           _width = size.width;
@@ -134,7 +134,7 @@ class TagsState extends State<Tags> {
         runAlignment: widget.runAlignment,
         spacing: widget.spacing,
         runSpacing: widget.runSpacing,
-        column: widget.columns,
+        column: widget.columns!,
         symmetry: widget.symmetry,
         textDirection: widget.textDirection,
         direction: widget.direction,
@@ -159,12 +159,12 @@ class TagsState extends State<Tags> {
         ? Container(
             child: widget.textField,
           )
-        : null;
+        : Container();
 
-    List<Widget> finalList = List();
+    List<Widget> finalList = [];
 
     List<Widget> itemList = List.generate(widget.itemCount, (i) {
-      final Widget item = widget.itemBuilder(i);
+      final Widget item = widget.itemBuilder!(i);
       if (widget.symmetry)
         return Container(
           width: _widthCalc(),
@@ -214,12 +214,12 @@ class TagsState extends State<Tags> {
 /// Inherited Widget
 class DataListInherited extends InheritedWidget {
   DataListInherited(
-      {Key key, this.list, this.symmetry, this.itemCount, Widget child})
-      : super(key: key, child: child);
+      {Key? key, this.list, this.symmetry, this.itemCount, Widget? child})
+      : super(key: key, child: child!);
 
-  final List<DataList> list;
-  final bool symmetry;
-  final int itemCount;
+  final List<DataList>? list;
+  final bool? symmetry;
+  final int? itemCount;
 
   @override
   bool updateShouldNotify(DataListInherited old) {
@@ -229,15 +229,15 @@ class DataListInherited extends InheritedWidget {
 
   /*static DataListInherited of(BuildContext context) =>
       context.inheritFromWidgetOfExactType(DataListInherited);*/
-  static DataListInherited of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType();
+  static DataListInherited? of(BuildContext? context) =>
+      context!.dependOnInheritedWidgetOfExactType();
 }
 
 /// Data List
 class DataList extends ValueNotifier implements Item {
   DataList(
-      {@required this.title,
-      this.index,
+      {required this.title,
+      this.index = 0,
       bool highlights = false,
       bool active = true,
       this.customData})
@@ -249,13 +249,14 @@ class DataList extends ValueNotifier implements Item {
   final dynamic customData;
   final int index;
 
-  get showDuplicate {
+
+  bool get showDuplicate {
     final val = _showDuplicate;
     _showDuplicate = false;
-    return val;
+    return val!;
   }
 
-  bool _showDuplicate;
+  bool? _showDuplicate;
   set showDuplicate(bool a) {
     _showDuplicate = a;
     // rebuild only the specific Item that changes its value
@@ -264,8 +265,8 @@ class DataList extends ValueNotifier implements Item {
 
   get active => _active;
   bool _active;
-  set active(bool a) {
-    _active = a;
+  set active(bool? a) {
+    _active = a!;
     // rebuild only the specific Item that changes its value
     notifyListeners();
   }

@@ -1,11 +1,10 @@
 name: flutter_tags
 description: Creating selectable and input tags (TextField) has never been easier.
-version: 0.4.9
-author: Antonino Di Natale <gyorgio88@gmail.com>
-homepage: https://github.com/Dn-a/flutter_tags
+version: 1.0.0
+homepage: https://github.com/GigsEthiopia/flutter_tags
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
